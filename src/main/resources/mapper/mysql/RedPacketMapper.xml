@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xum.demo.dao.mysql.RedPacketMapper" >
+  <resultMap id="BaseResultMap" type="com.xum.demo.pojo.mysql.RedPacket" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="redPacketId" property="redpacketid" jdbcType="INTEGER" />
+    <result column="userId" property="userid" jdbcType="INTEGER" />
+    <result column="money" property="money" jdbcType="BIGINT" />
+    <result column="createTime" property="createtime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, redPacketId, userId, money, createTime
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from red_packet
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from red_packet
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByPacketIdBatch" parameterType="int[]" >
+    delete from red_packet
+    where redPacketId in
+    <foreach collection="array" item="arr" index="index" open="(" separator="," close=")">
+      #{arr}
+    </foreach>
+  </delete>
+  <insert id="insert" parameterType="com.xum.demo.pojo.mysql.RedPacket" >
+    insert into red_packet (id, redPacketId, userId, 
+      money, createTime)
+    values (#{id,jdbcType=INTEGER}, #{redpacketid,jdbcType=INTEGER}, #{userid,jdbcType=INTEGER}, 
+      #{money,jdbcType=BIGINT}, #{createtime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id" parameterType="java.util.List" >
+    insert into red_packet (redPacketId, userId, money, createTime)
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.redpacketid,jdbcType=INTEGER}, #{item.userid,jdbcType=INTEGER},
+       #{item.money,jdbcType=BIGINT}, #{item.createtime,jdbcType=TIMESTAMP})
+    </foreach>
+  </insert>
+  <insert id="insertSelective" parameterType="com.xum.demo.pojo.mysql.RedPacket" >
+    insert into red_packet
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="redpacketid != null" >
+        redPacketId,
+      </if>
+      <if test="userid != null" >
+        userId,
+      </if>
+      <if test="money != null" >
+        money,
+      </if>
+      <if test="createtime != null" >
+        createTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="redpacketid != null" >
+        #{redpacketid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        #{money,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="truncateRedPacketTable">
+    truncate table red_packet
+</update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xum.demo.pojo.mysql.RedPacket" >
+    update red_packet
+    <set >
+      <if test="redpacketid != null" >
+        redPacketId = #{redpacketid,jdbcType=INTEGER},
+      </if>
+      <if test="userid != null" >
+        userId = #{userid,jdbcType=INTEGER},
+      </if>
+      <if test="money != null" >
+        money = #{money,jdbcType=BIGINT},
+      </if>
+      <if test="createtime != null" >
+        createTime = #{createtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xum.demo.pojo.mysql.RedPacket" >
+    update red_packet
+    set redPacketId = #{redpacketid,jdbcType=INTEGER},
+      userId = #{userid,jdbcType=INTEGER},
+      money = #{money,jdbcType=BIGINT},
+      createTime = #{createtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

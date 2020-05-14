@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xum.demo.dao.mysql.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.xum.demo.pojo.mysql.User" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="age" property="age" jdbcType="INTEGER" />
+    <result column="sex" property="sex" jdbcType="CHAR" />
+    <result column="province" property="province" jdbcType="VARCHAR" />
+    <result column="email" property="email" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, name, age, sex, province, email, address
+  </sql>
+  <select id="selectAllCount" resultType="java.lang.Integer">
+    select count(1) from user
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectUsersWithBootGrid" parameterType="java.util.Map" resultType="java.util.Map">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    <trim prefix=" where (" suffix=") "> 
+      <if test="searchPhrase != null">
+          id like "%"#{searchPhrase, jdbcType=VARCHAR}"%" 
+          or name like "%"#{searchPhrase, jdbcType=VARCHAR}"%" 
+          or age like "%"#{searchPhrase, jdbcType=VARCHAR}"%" 
+          or sex like "%"#{searchPhrase, jdbcType=VARCHAR}"%" 
+          or province like "%"#{searchPhrase, jdbcType=VARCHAR}"%"
+          or email like "%"#{searchPhrase, jdbcType=VARCHAR}"%"
+          or address like "%"#{searchPhrase, jdbcType=VARCHAR}"%"
+        </if>
+    </trim>
+    <trim prefix=" order by " suffix=" " suffixOverrides=",">
+        <if test="sortId != null" >
+          id ${sortId},
+        </if>
+        <if test="sortName != null" >
+          name ${sortName},
+        </if>
+        <if test="sortAge != null" >
+          age ${sortAge},
+        </if> 
+        <if test="sortSex != null" >
+          sex ${sortSex},
+        </if>
+        <if test="sortProvince != null" >
+          province ${sortProvince},
+        </if>
+        <if test="sortEmail != null" >
+          email ${sortEmail},
+        </if>
+        <if test="sortAddress != null" >
+          address ${sortAddress},
+        </if>
+    </trim>
+    limit #{offSet,jdbcType=INTEGER},#{rowCount,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.xum.demo.pojo.mysql.User" useGeneratedKeys="true" keyProperty="id">
+    insert into user (name, age,
+      sex, province, email, 
+      address)
+    values (#{name,jdbcType=VARCHAR}, #{age,jdbcType=INTEGER},
+      #{sex,jdbcType=CHAR}, #{province,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xum.demo.pojo.mysql.User" useGeneratedKeys="true" keyProperty="id">
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="age != null" >
+        age,
+      </if>
+      <if test="sex != null" >
+        sex,
+      </if>
+      <if test="province != null" >
+        province,
+      </if>
+      <if test="email != null" >
+        email,
+      </if>
+      <if test="address != null" >
+        address,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=CHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xum.demo.pojo.mysql.User" >
+    update user
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        age = #{age,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null" >
+        sex = #{sex,jdbcType=CHAR},
+      </if>
+      <if test="province != null" >
+        province = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        email = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xum.demo.pojo.mysql.User" >
+    update user
+    set name = #{name,jdbcType=VARCHAR},
+      age = #{age,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=CHAR},
+      province = #{province,jdbcType=VARCHAR},
+      email = #{email,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

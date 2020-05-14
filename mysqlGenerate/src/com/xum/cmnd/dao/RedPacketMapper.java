@@ -1,0 +1,17 @@
+package com.xum.cmnd.dao;
+
+import com.xum.cmnd.pojo.RedPacket;
+
+public interface RedPacketMapper {
+    int deleteByPrimaryKey(Integer id);
+
+    int insert(RedPacket record);
+
+    int insertSelective(RedPacket record);
+
+    RedPacket selectByPrimaryKey(Integer id);
+
+    int updateByPrimaryKeySelective(RedPacket record);
+
+    int updateByPrimaryKey(RedPacket record);
+}

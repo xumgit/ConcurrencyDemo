@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xum.demo.dao.oracle.UserinfoMapper" >
+  <cache></cache>
+  <resultMap id="BaseResultMap" type="com.xum.demo.pojo.oracle.Userinfo" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="AGE" property="age" jdbcType="DECIMAL" />
+    <result column="SEX" property="sex" jdbcType="VARCHAR" />
+    <result column="PROVINCE" property="province" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="ADDRESS" property="address" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, NAME, AGE, SEX, PROVINCE, EMAIL, ADDRESS
+  </sql>
+  <select id="selectAllCount" resultType="java.lang.Integer">
+   	select count(1) from USERINFO
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from USERINFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <select id="selectUserinfoWithBootGrid" parameterType="java.util.Map" resultType="java.util.Map">
+    select
+        <include refid="Base_Column_List" />
+    from
+    (
+        select
+          <include refid="Base_Column_List" />, ROWNUM RN
+        from
+        (
+            select
+                <include refid="Base_Column_List" />
+            from USERINFO
+            <trim prefix=" where (" suffix=") ">
+                <if test="searchPhrase != null">
+                    NAME like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                    or AGE like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                    or SEX like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                    or PROVINCE like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                    or EMAIL like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                    or ADDRESS like '%'||#{searchPhrase, jdbcType=VARCHAR}||'%'
+                </if>
+            </trim>
+            <trim prefix=" order by " suffix=" " suffixOverrides=",">
+                <if test="IdSort != null" >
+                    ID ${IdSort},
+                </if>
+                <if test="NameSort != null" >
+                    NAME ${NameSort},
+                </if>
+                <if test="AgeSort != null" >
+                    AGE ${AgeSort},
+                </if>
+                <if test="SexSort != null" >
+                    SEX ${SexSort},
+                </if>
+                <if test="ProvinceSort != null" >
+                    PROVINCE ${ProvinceSort},
+                </if>
+                <if test="EmailSort != null" >
+                    EMAIL ${EmailSort},
+                </if>
+                <if test="AddressSort != null" >
+                    ADDRESS ${AddressSort},
+                </if>
+            </trim>
+        ) userinfo_temp
+        where ROWNUM &lt;= #{rowCount, jdbcType=INTEGER}
+     )
+    where RN &gt;= #{offSet, jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from USERINFO
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.xum.demo.pojo.oracle.Userinfo" >
+    insert into USERINFO (ID, NAME, AGE, 
+      SEX, PROVINCE, EMAIL, 
+      ADDRESS)
+    values (#{id,jdbcType=DECIMAL}, #{name,jdbcType=VARCHAR}, #{age,jdbcType=DECIMAL}, 
+      #{sex,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xum.demo.pojo.oracle.Userinfo" >
+    insert into USERINFO
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="age != null" >
+        AGE,
+      </if>
+      <if test="sex != null" >
+        SEX,
+      </if>
+      <if test="province != null" >
+        PROVINCE,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="address != null" >
+        ADDRESS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        #{age,jdbcType=DECIMAL},
+      </if>
+      <if test="sex != null" >
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xum.demo.pojo.oracle.Userinfo" >
+    update USERINFO
+    <set >
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="age != null" >
+        AGE = #{age,jdbcType=DECIMAL},
+      </if>
+      <if test="sex != null" >
+        SEX = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="province != null" >
+        PROVINCE = #{province,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null" >
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xum.demo.pojo.oracle.Userinfo" >
+    update USERINFO
+    set NAME = #{name,jdbcType=VARCHAR},
+      AGE = #{age,jdbcType=DECIMAL},
+      SEX = #{sex,jdbcType=VARCHAR},
+      PROVINCE = #{province,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xum.demo.dao.oracle.ArticleMapper" >
+  <resultMap id="BaseResultMap" type="com.xum.demo.pojo.oracle.Article" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="USERID" property="userid" jdbcType="DECIMAL" />
+    <result column="MESSAGE" property="message" jdbcType="VARCHAR" />
+    <result column="LASTTIME" property="lasttime" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, USERID, MESSAGE, LASTTIME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from ARTICLE
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from ARTICLE
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.xum.demo.pojo.oracle.Article" >
+    insert into ARTICLE (ID, USERID, MESSAGE, 
+      LASTTIME)
+    values (#{id,jdbcType=DECIMAL}, #{userid,jdbcType=DECIMAL}, #{message,jdbcType=VARCHAR}, 
+      #{lasttime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xum.demo.pojo.oracle.Article" >
+    insert into ARTICLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="userid != null" >
+        USERID,
+      </if>
+      <if test="message != null" >
+        MESSAGE,
+      </if>
+      <if test="lasttime != null" >
+        LASTTIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=DECIMAL},
+      </if>
+      <if test="userid != null" >
+        #{userid,jdbcType=DECIMAL},
+      </if>
+      <if test="message != null" >
+        #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        #{lasttime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xum.demo.pojo.oracle.Article" >
+    update ARTICLE
+    <set >
+      <if test="userid != null" >
+        USERID = #{userid,jdbcType=DECIMAL},
+      </if>
+      <if test="message != null" >
+        MESSAGE = #{message,jdbcType=VARCHAR},
+      </if>
+      <if test="lasttime != null" >
+        LASTTIME = #{lasttime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xum.demo.pojo.oracle.Article" >
+    update ARTICLE
+    set USERID = #{userid,jdbcType=DECIMAL},
+      MESSAGE = #{message,jdbcType=VARCHAR},
+      LASTTIME = #{lasttime,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>
