@@ -11,7 +11,7 @@
  Target Server Version : 50528
  File Encoding         : 65001
 
- Date: 24/05/2020 11:52:51
+ Date: 24/05/2020 11:59:27
 */
 
 SET NAMES utf8mb4;
@@ -63,6 +63,14 @@ CREATE TABLE `seckill`  (
   INDEX `idx_end_time`(`end_time`) USING BTREE,
   INDEX `idx_create_time`(`create_time`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 1004 CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '秒杀库存表' ROW_FORMAT = Compact;
+
+-- ----------------------------
+-- Records of seckill
+-- ----------------------------
+INSERT INTO `seckill` VALUES (1000, '1000元秒杀iphone8', 100, '2018-05-10 15:31:53', '2018-05-10 15:31:53', '2018-05-10 15:31:53', 0);
+INSERT INTO `seckill` VALUES (1001, '500元秒杀ipad2', 100, '2018-05-10 15:31:53', '2018-05-10 15:31:53', '2018-05-10 15:31:53', 0);
+INSERT INTO `seckill` VALUES (1002, '300元秒杀小米4', 100, '2018-05-10 15:31:53', '2018-05-10 15:31:53', '2018-05-10 15:31:53', 0);
+INSERT INTO `seckill` VALUES (1003, '200元秒杀红米note', 100, '2018-05-10 15:31:53', '2018-05-10 15:31:53', '2018-05-10 15:31:53', 0);
 
 -- ----------------------------
 -- Table structure for success_killed
